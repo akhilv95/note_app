@@ -1,28 +1,44 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
+import NoteForm from "./components/NoteForm";
+import NoteList from "./components/NoteList";
+import "./styles.css";
 
 export default function App() {
   const [notes, setNotes] = useState([]);
-  const [input, setInput] = useState("");
-  const [editingId, setEditingId] = useState(null);
+  const [editingNote, setEditingNote] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  
+  useState(() => {
+    const savedNotes = localStorage.getItem("notes");
+    return savedNotes ? JSON.parse(savedNotes) : [];
+  });
+  
+  // Load notes from localStorage
+  useEffect(() => {
+    const storedNotes = JSON.parse(localStorage.getItem("notes")) || [];
+    setNotes(storedNotes);
+  }, []);
 
-  const addNote = () => {
-    if (input.trim()) {
-      setNotes([...notes, { id: uuidv4(), text: input }]);
-      setInput("");
+  // Save notes to localStorage
+  useEffect(() => {
+    if (notes.length > 0) {
+      localStorage.setItem("notes", JSON.stringify(notes));
     }
+  }, [notes]);
+  
+  const addNote = (note) => {
+    // Check for duplicate title
+    if (notes.some((n) => n.title === note.title)) {
+      alert("Title must be unique!");
+      return;
+    }
+    setNotes([...notes, { id: uuidv4(), ...note }]);
   };
 
-  const editNote = (id) => {
-    const noteToEdit = notes.find((note) => note.id === id);
-    setInput(noteToEdit.text);
-    setEditingId(id);
-  };
-
-  const updateNote = () => {
-    setNotes(notes.map((note) => (note.id === editingId ? { ...note, text: input } : note)));
-    setInput("");
-    setEditingId(null);
+  const editNote = (updatedNote) => {
+    setNotes(notes.map((note) => (note.id === updatedNote.id ? updatedNote : note)));
+    setEditingNote(null);
   };
 
   const deleteNote = (id) => {
@@ -30,34 +46,17 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-4 bg-gray-100">
-      <h1 className="text-3xl font-bold mb-4">📝 Note-Taking App</h1>
-      <div className="w-full max-w-md bg-white p-4 rounded-lg shadow-md">
-        <input
-          type="text"
-          className="w-full p-2 border rounded-lg"
-          placeholder="Enter a note..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        />
-        <button
-          className="w-full mt-2 p-2 bg-blue-500 text-white rounded-lg"
-          onClick={editingId ? updateNote : addNote}
-        >
-          {editingId ? "Update Note" : "Add Note"}
-        </button>
-      </div>
-      <div className="w-full max-w-md mt-4">
-        {notes.map((note) => (
-          <div key={note.id} className="bg-white p-3 mt-2 rounded-lg shadow flex justify-between items-center">
-            <span>{note.text}</span>
-            <div>
-              <button className="text-blue-500 mr-2" onClick={() => editNote(note.id)}>Edit</button>
-              <button className="text-red-500" onClick={() => deleteNote(note.id)}>Delete</button>
-            </div>
-          </div>
-        ))}
-      </div>
+    <div className="app-container">
+      <h1>📝 Note-Taking App</h1>
+      <input
+        type="text"
+        placeholder="Search notes..."
+        className="search-bar"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+      <NoteForm addNote={addNote} editNote={editNote} editingNote={editingNote} />
+      <NoteList notes={notes} editNote={setEditingNote} deleteNote={deleteNote} searchQuery={searchQuery} />
     </div>
   );
 }

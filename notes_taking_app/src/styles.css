@@ -1,0 +1,98 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  /* App Container */
+  .app-container {
+    width: 100%;
+    max-width: 600px;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  /* Search Bar */
+  .search-bar {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 16px;
+  }
+  
+  /* Form */
+  .note-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .note-form input,
+  .note-form textarea,
+  .note-form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 5px;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  button.add { background-color: #007bff; color: white; }
+  button.edit { background-color: #43df67; color: white; }
+  button.delete { background-color: #dc3545; color: white; }
+  button:hover { opacity: 0.8; }
+  
+  /* Notes */
+  .note-list { margin-top: 20px; }
+  
+  .note {
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    text-align: left;
+    position: relative;
+  }
+  
+  .note-title { font-weight: bold; color: #333; margin-bottom: 5px; }
+  .note-content { color: #555; }
+  
+  .note-category {
+    font-size: 12px;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 5px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-weight: bold;
+  }
+  
+  .category-work { background-color: #ff9800; }
+  .category-personal { background-color: #4caf50; }
+  .category-ideas { background-color: #3f51b5; }
+  .category-others { background-color: #9e9e9e; }
+  
