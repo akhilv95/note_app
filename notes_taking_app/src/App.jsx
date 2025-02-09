@@ -47,7 +47,7 @@ export default function App() {
 
   return (
     <div className="app-container">
-      <h1>📝 Note-Taking App</h1>
+      <h1>Note-Taking App</h1>
       <input
         type="text"
         placeholder="Search notes..."
